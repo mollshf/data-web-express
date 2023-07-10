@@ -1,0 +1,51 @@
+<%- include('layouts/header') %>
+<%- include('layouts/nav') %>
+    <main>
+        <div class="container">
+            <div class="row center">
+                <div class="col-md-8">
+                    <h2>Data List</h2>
+                    <a href="/contact/add" class="btn btn-primary mb-2">Add Data</a>
+                    <% if (msg.length !== 0) { %>
+                      <div class="alert alert-success" role="alert"><%= msg %></div>
+                    <% } %>
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nama</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">No HP</th>
+                            <th scope="col">Aksi</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% if (datas.length === 0) { %>
+                            <tr>
+                              <td colspan="6">
+                                <div class="alert alert-danger fw-bold" role="alert">
+                                  No Data Available
+                                  <br>
+                                  <a href="/" class="fw-normal">&laquo; Back to Home</a>
+                              </div>
+                              </td>
+                            </tr>
+                            
+                          <% } %>
+                            <% let a = 1 %>
+                            <% datas.forEach((data, i) => { %>
+                            <tr>
+                              <th scope="row"><%= i + 1 %></th>
+                              <td><%= data.nama %></td>
+                              <td><%= data.email %></td>
+                              <td><%= data.noHP %></td>
+                              <td><a href="/contact/<%= data.nama %>" class="btn btn-success badge rounded-pill"><i class="bi bi-info-circle"></i> Detail</a></td>
+                          </tr>
+                            <% }) %>
+                          
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+    </main>

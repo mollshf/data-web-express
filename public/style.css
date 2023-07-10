@@ -1,0 +1,15 @@
+
+
+img {
+    width: 150px;
+    border-radius: 50%;
+}
+footer {
+    height: 50px;
+    width: 100%;
+    background-color: gray;
+    position: absolute;
+    bottom: 1px;
+    text-align: center;
+    padding-top: 10px;
+}
