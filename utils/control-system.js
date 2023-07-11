@@ -18,6 +18,12 @@ if(!fs.existsSync(filePath)) {
 const loadData = () => {
     const buffer = fs.readFileSync(filePath, 'utf-8');
     const datas = JSON.parse(buffer);
+    // sorting data di database
+    datas.sort((a, b) => {
+        if (a.nama.toLowerCase() < b.nama.toLowerCase()) return -1;
+        if (a.nama.toLowerCase() > b.nama.toLowerCase()) return 1;
+        return 0;
+    })
     return datas;
 }
 
@@ -53,6 +59,16 @@ const deleteData = (nama) => {
     saveDatas(filterData);
 }
 
+const updateData = (dataBaru) => {
+    const datas = loadData();
+    // hilangkan data lama yang namanya sama dengan oldName
+    const filteredData = datas.filter((elm) => elm.nama !== dataBaru.oldName);
+    
+    delete dataBaru.oldName;
+    filteredData.push(dataBaru);
+    saveDatas(filteredData);
+} 
 
 
-module.exports = { loadData, findData, addData, cekDuplikat, deleteData }
+
+module.exports = { loadData, findData, addData, cekDuplikat, deleteData, updateData }

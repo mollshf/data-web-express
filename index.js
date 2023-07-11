@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mahasiswa = require('./dataMhs');
-const { loadData, findData, addData, cekDuplikat, deleteData } = require('./utils/control-system');
+const { loadData, findData, addData, cekDuplikat, deleteData, updateData } = require('./utils/control-system');
 const { body, validationResult, check } = require('express-validator');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -57,8 +57,9 @@ app.get('/contact/add', (req, res) => {
   })
 })
 
-// Proses Ubah Data
-app.post('/contact', 
+// Proses Tambah Data
+app.post(
+  '/contact', 
 // validator Middleware
 [
   body('nama').custom((value) => {
@@ -99,6 +100,46 @@ app.get('/contact/delete/:nama', (req, res) => {
     req.flash('msg', 'Data berhasil di hapus')
     res.redirect('/contact')
   }
+})
+
+// Halaman Form Ubah Data
+app.get('/contact/edit/:nama', (req, res) => {
+  const data = findData(req.params.nama)
+  res.render('edit-data', {
+    title: 'Form Ubah Data',
+    data
+  })
+})
+
+// Proses Ubah Data
+app.post(
+  '/contact/update', 
+// validator Middleware
+[
+  body('nama').custom((value, {req}) => {
+    const duplikat = cekDuplikat(value)
+    if (value !== req.body.oldName && duplikat) {
+      throw new Error('nama kontak sudah terdaftar')
+    }
+    return true;
+  }),
+  check('email', 'E-mail tidak valid').isEmail(),
+  check('noHP', 'No HP tidak valid').isMobilePhone('id-ID')
+], 
+// logika penanganan post
+(req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    res.render('edit-data', {
+      title: 'Ubah Data',
+      errors: errors.array(),
+      data: req.body
+    })
+    return;
+  }
+  updateData(req.body)
+  req.flash('msg', 'Data berhasil di Ubah')
+  res.redirect('/contact')
 })
 
 

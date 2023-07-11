@@ -17,6 +17,7 @@
                 <h5 class="card-title"><%= data.nama %></h5>
                 <h6 class="card-subtitle mb-2 text-muted"><%= data.noHP %></h6>
                 <p class="card-text"><%= data.email %></p>
+                <a href="/contact/edit/<%= data.nama %>" class="btn btn-info badge">Ubah</a>
                 <a href="/contact/delete/<%= data.nama %>" class="btn btn-danger badge" onclick="return confirm('Yakin Kau mau hapus data ni?')">Hapus</a>
                 <a href="/contact" class="card-link d-block mt-3">&laquo; Kembali ke daftar Contact</a>
                 </div>
@@ -26,4 +27,3 @@
     </div>
 </div>
 
-<%- include('layouts/footer') %>
